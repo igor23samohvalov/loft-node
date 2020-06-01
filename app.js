@@ -37,7 +37,7 @@ function sortFiles(directory) {
                     if (!fs.existsSync(`${dirToInstall}/newone/${path.parse(currentFile).base[0]}`)) {
                         fs.mkdirSync(`${dirToInstall}/newone/${path.parse(currentFile).base[0]}`)
                     }
-                    fs.link(currentFile, `${dirToInstall}/newone/${path.parse(currentFile).base[0]}/${part}`, err => {
+                    fs.copyFile(currentFile, `${dirToInstall}/newone/${path.parse(currentFile).base[0]}/${part}`, err => {
                         if (err) {
                             console.error(err.message);
 
