@@ -4,20 +4,31 @@ const rimraf = require('rimraf');
 
 const [dirToCopy, dirToInstall] = process.argv.slice(2);
 
-fs.mkdir(path.join(dirToInstall, '/newone'), {}, err => {
-    if (err) {
-        console.error(err.message);
-        
-        return
-    }
-    sortFiles(dirToCopy);
-    rimraf(dirToCopy, () => console.log('deleted'))
-})
+emulateCntrlX()
+    .then(() => sortFiles(dirToCopy))
+    .then(() => rimraf(dirToCopy, () => console.log('deleted')))
+    .then(() => console.log('success!'))
+
+const emulateCntrlX = () => {
+
+    return new Promise((res, rej) => {
+        fs.mkdir(path.join(dirToInstall, '/newone'), {}, err => {
+            if (err) {
+                console.error(err.message);
+                
+                return rej
+            }
+            console.log('made it')
+            return res()
+        })
+    })
+}
 
 function sortFiles(directory) {
     fs.readdir(directory, (err, files) => {
         if (err) {
             console.error(err.message);
+
             return
         }
     
